@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вэбсайт хэрхэн нийтлэх вэ – GitHub Pages ба сервер</title>
+<meta name="description" content="Өөрийн вэбсайтыг интернетэд нийтлэх хялбар арга (GitHub Pages) болон хүнд арга (VPS сервер, Nginx, HTTPS)-ыг алхам алхмаар тайлбарласан гарын авлага.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fc;--card:#fff;--ink:#12142b;--mute:#5a5f7d;--line:#dfe3f3;--a:#5b5bf0;--b:#00a896;--c:#ff7a45;--soft:#eceeff;--code:#10132e;--grad:linear-gradient(135deg,#5b5bf0,#8a4df0 55%,#00b8a3);--sh:0 8px 28px rgba(60,60,140,.10)}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0d1f;--card:#14172e;--ink:#eceefb;--mute:#9a9fc2;--line:#262a4a;--a:#8c8cff;--b:#2fd8c3;--c:#ff9468;--soft:#1b1f40;--code:#070918;--sh:none}}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:Manrope,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+h1,h2,h3{font-family:Unbounded,"Segoe UI",Arial,sans-serif;line-height:1.25}
+a{color:var(--a)}
+:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.hero{background:radial-gradient(circle at 82% 25%,#3a2f9e 0,transparent 46%),radial-gradient(circle at 8% 95%,#00796b 0,transparent 42%),#0b0d1f;color:#fff;padding:52px 20px 58px}
+.hw{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+.pill{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:4px 14px;font-size:.82rem;margin-bottom:16px}
+.hero h1{font-size:clamp(1.8rem,4.6vw,3rem);margin-bottom:16px;background:linear-gradient(90deg,#fff,#b9b9ff 60%,#6ff0de);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:34em;opacity:.9;margin-bottom:22px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips a{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem;padding:9px 16px;border-radius:30px;background:var(--grad)}
+.chips a+a{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.hv svg{width:100%;height:auto;display:block}
+.nav{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line)}
+.nav div{max-width:1100px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;overflow-x:auto}
+.nav a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 14px;border-radius:20px;font-size:.9rem}
+.nav a:hover{background:var(--soft);color:var(--a)}
+main{max-width:1000px;margin:0 auto;padding:28px 20px 60px;counter-reset:s}
+section{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px;margin-bottom:26px;box-shadow:var(--sh);display:flow-root}
+h2{font-size:clamp(1.2rem,2.5vw,1.55rem);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+h2::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-size:.8rem;color:#fff;background:var(--grad);border-radius:10px;padding:5px 9px;flex:none}
+h3{font-size:1rem;margin-bottom:6px}
+p{margin-bottom:12px;max-width:46em}
+.fig{float:right;width:250px;margin:0 0 14px 24px;background:linear-gradient(160deg,var(--soft),var(--card));border:1px solid var(--line);border-radius:18px;padding:10px;text-align:center}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{font-size:.8rem;color:var(--mute)}
+.k1{fill:var(--a)}.k2{fill:var(--b)}.k3{fill:var(--c)}.k4{fill:var(--card);stroke:var(--a);stroke-width:3}.k5{fill:none;stroke:var(--a);stroke-width:3;stroke-linecap:round}
+.box{background:var(--soft);border-radius:14px;padding:14px 18px;margin:14px 0;clear:both}
+.box.tip{background:color-mix(in srgb,var(--c) 14%,var(--card))}
+.box b{display:block;margin-bottom:2px}
+.flowrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0;clear:both}
+.flowrow span{background:var(--soft);border-radius:12px;padding:10px 16px;font-weight:700}
+.flowrow i{color:var(--a);font-style:normal;font-weight:700}
+.bar{height:10px;background:var(--soft);border-radius:10px;overflow:hidden;margin:6px 0 16px;clear:both}
+.bar div{height:100%;width:0;background:var(--grad);transition:width .3s}
+.pc{font-size:.85rem;color:var(--mute);clear:both}
+ol.steps{list-style:none;padding:0;counter-reset:st;clear:both}
+ol.steps>li{counter-increment:st;position:relative;padding:0 0 22px 52px;margin-left:6px;border-left:2px dashed var(--line)}
+ol.steps>li:last-child{border-color:transparent;padding-bottom:0}
+ol.steps>li::before{content:counter(st);position:absolute;left:-17px;top:0;width:32px;height:32px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.9rem}
+.done{display:inline-flex;gap:6px;align-items:center;font-size:.82rem;color:var(--mute);cursor:pointer;margin-top:4px}
+pre{background:var(--code);color:#e3e6ff;border-radius:12px;padding:14px 16px;margin:10px 0;overflow-x:auto;font:.85rem/1.6 ui-monospace,Consolas,monospace;position:relative}
+.cp{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:8px;padding:3px 10px;font:.75rem Manrope,sans-serif;cursor:pointer}
+pre{padding-right:70px}
+code.i{background:var(--soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:14px 0;clear:both}
+.card{background:var(--soft);border-radius:16px;padding:16px}
+.card b{color:var(--a)}
+.card p{font-size:.9rem;margin:6px 0 0;color:var(--mute)}
+.scroll{overflow-x:auto;margin:14px 0;clear:both}
+.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:.92rem;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cmp th,.cmp td{border-bottom:1px solid var(--line);padding:10px 13px;text-align:left;vertical-align:top}
+.cmp tr:last-child td{border:0}
+.cmp th{background:var(--soft);color:var(--a)}
+.pick{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.pick button{padding:9px 16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:30px;cursor:pointer;font:700 .9rem Manrope,sans-serif}
+.pick button[aria-pressed=true]{background:var(--grad);color:#fff;border-color:transparent}
+#res{background:var(--soft);border-radius:14px;padding:14px 18px}
+details{background:var(--soft);border-radius:14px;padding:13px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0 0;color:var(--mute)}
+footer{background:#0b0d1f;color:#c9cdee;padding:26px 20px;text-align:center;font-size:.9rem}
+footer a{color:#9ff0e2}
+@media (max-width:820px){.hw{grid-template-columns:1fr}.hv{max-width:340px;margin:0 auto}.fig{float:none;margin:0 auto 16px}section{padding:20px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar div{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="hw">
+ <div>
+  <span class="pill">Алхам алхмаар гарын авлага</span>
+  <h1>Вэбсайтаа интернетэд хэрхэн нийтлэх вэ?</h1>
+  <p>Өөрийн бичсэн <code>index.html</code>-ийг бусад хүмүүс харах боломжтой болгох хоёр арга: үнэгүй, хурдан <b>GitHub Pages</b> болон бүрэн хяналттай <b>өөрийн сервер</b>.</p>
+  <div class="chips"><a href="#easy">Хялбар арга</a><a href="#hard">Хүнд арга</a><a href="#pick">Аль нь надад тохиромжтой вэ?</a></div>
+ </div>
+ <div class="hv"><svg viewBox="0 0 360 280" role="img" aria-label="Компьютерээс интернет рүү нийтлэх зураг"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8c8cff"/><stop offset="1" stop-color="#2fd8c3"/></linearGradient></defs>
+ <rect x="20" y="150" width="110" height="72" rx="8" fill="#1a1e4a" stroke="url(#g1)" stroke-width="3"/><rect x="30" y="160" width="90" height="52" rx="4" fill="url(#g1)"/><text x="75" y="192" text-anchor="middle" font-family="monospace" font-weight="700" font-size="14" fill="#0b0d1f">&lt;html&gt;</text><rect x="8" y="226" width="134" height="8" rx="4" fill="#8c8cff"/>
+ <path d="M135 175C175 175 165 110 210 110" stroke="#2fd8c3" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
+ <path d="M228 105a30 30 0 1 1 56 14h14a22 22 0 0 1 0 44h-76a26 26 0 0 1 6-58z" fill="#1a1e4a" stroke="url(#g1)" stroke-width="3" transform="translate(-4 -48)"/>
+ <text x="232" y="106" text-anchor="middle" font-family="Unbounded,sans-serif" font-size="12" font-weight="700" fill="#b9b9ff">GitHub</text>
+ <path d="M250 125C270 160 280 170 290 190" stroke="#ff9468" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
+ <circle cx="300" cy="215" r="42" fill="#1a1e4a" stroke="url(#g1)" stroke-width="3"/><ellipse cx="300" cy="215" rx="18" ry="42" fill="none" stroke="#8c8cff" stroke-width="2"/><path d="M258 215h84M266 195h68M266 235h68" stroke="#8c8cff" stroke-width="2"/></svg></div>
+</div></header>
+
+<div class="nav" role="navigation" aria-label="Цэс"><div>
+ <a href="#basic">Үндсэн ойлголт</a><a href="#easy">Хялбар арга</a><a href="#alt">Бусад үнэгүй</a><a href="#hard">Хүнд арга</a><a href="#domain">Домэйн, HTTPS</a><a href="#pick">Харьцуулалт</a><a href="#faq">Асуулт</a>
+</div></div>
+
+<main>
+<section id="basic">
+ <h2>Вэбсайт интернетэд хэрхэн гардаг вэ?</h2>
+ <p>Компьютер дээр бичсэн <code class="i">index.html</code> файл зөвхөн таны компьютерт л байдаг. Бусад хүн харахын тулд файлыг <b>24 цаг асаалттай байдаг компьютерт</b> (хостинг, сервер) байрлуулж, түүнд <b>хаяг</b> өгөх хэрэгтэй.</p>
+ <div class="flowrow"><span>1. Файл бэлтгэх</span><i>→</i><span>2. Хостинг</span><i>→</i><span>3. Хаяг (домэйн)</span><i>→</i><span>4. HTTPS</span></div>
+ <div class="cards">
+  <div class="card"><b>Хостинг</b><p>Таны файлыг хадгалж, хүсэлт ирэхэд хүргэдэг компьютер.</p></div>
+  <div class="card"><b>Домэйн</b><p>Хүний уншихад хялбар хаяг, жишээ нь <code class="i">example.mn</code>.</p></div>
+  <div class="card"><b>DNS</b><p>Домэйныг серверийн IP хаяг руу чиглүүлдэг «хаягийн лавлах».</p></div>
+  <div class="card"><b>HTTPS</b><p>Холболтыг шифрлэж, хөтөчид «найдвартай» гэж харуулдаг гэрчилгээ.</p></div>
+ </div>
+ <div class="box"><b>Файлын нэр</b>Нүүр хуудсыг заавал <code class="i">index.html</code> гэж нэрлэнэ. Сервер хаяг дээр өөр файл заагаагүй үед энэ файлыг нээдэг.</div>
+</section>
+
+<section id="easy">
+ <figure class="fig" role="img" aria-label="Нэг товшилтоор нийтлэх"><svg viewBox="0 0 240 160"><rect x="20" y="30" width="200" height="100" rx="12" class="k4"/><circle cx="40" cy="48" r="4" class="k3"/><circle cx="54" cy="48" r="4" class="k2"/><circle cx="68" cy="48" r="4" class="k1"/><rect x="34" y="62" width="172" height="12" rx="6" class="k1" opacity=".25"/><rect x="34" y="84" width="110" height="10" rx="5" class="k1" opacity=".25"/><rect x="150" y="100" width="56" height="20" rx="10" class="k2"/><text x="178" y="114" text-anchor="middle" font-size="10" fill="#fff" font-weight="700" font-family="Manrope,sans-serif">Save</text></svg><figcaption>Хэдхэн товшилт</figcaption></figure>
+ <h2>Хялбар арга: GitHub Pages</h2>
+ <p>GitHub Pages нь GitHub дээр хадгалсан файлуудаас вэбсайт гаргаж өгдөг үйлчилгээ. Нийтийн (public) repository-д үнэгүй бөгөөд сервер, программ суулгах шаардлагагүй. Зөвхөн статик сайт (HTML, CSS, JavaScript) байрлуулна.</p>
+ <div class="bar"><div id="b1"></div></div><div class="pc" id="p1">0 / 6 алхам хийгдсэн</div>
+ <ol class="steps" data-bar="b1" data-pc="p1">
+  <li><h3>GitHub бүртгэл үүсгэх</h3><p><a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> хаягаар орж и-мэйлээр бүртгүүлнэ. Хэрэглэгчийн нэр (username) нь сайтын хаягт орох тул сайн бодож сонго.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Шинэ repository үүсгэх</h3><p>Баруун дээд буланд «+» → <b>New repository</b>. Нэрийг нь <code class="i">my-site</code> гэх мэтээр өг, <b>Public</b> сонгоно. Хэрэв нэрийг <code class="i">USERNAME.github.io</code> гэж өгвөл сайт шууд <code class="i">https://USERNAME.github.io</code> хаягаар гарна.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Файлаа байршуулах</h3><p>Repository дотор <b>Add file → Upload files</b>-ийг сонгож <code class="i">index.html</code> (болон зураг, CSS файлууд) чирж оруулаад <b>Commit changes</b> дарна.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Pages-ийг идэвхжүүлэх</h3><p><b>Settings → Pages</b> хэсэгт <b>Source: Deploy from a branch</b>, <b>Branch: main</b>, хавтас <b>/ (root)</b> сонгоод <b>Save</b> дарна.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>1–2 минут хүлээх</h3><p>Нийтлэгдсэний дараа Pages хуудсанд «Your site is live» гэсэн мэдээлэл болон хаяг гарна. Ерөнхийдөө хаяг нь:</p><pre><button class="cp">Хуулах</button>https://USERNAME.github.io/my-site/</pre><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Хөтөч дээр шалгах</h3><p>Хаягийг нээж сайт гарч байгаа эсэхийг шалга. Дараа нь файлаа солих бол дахин upload хийж commit хийхэд сайт автоматаар шинэчлэгдэнэ.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+ </ol>
+ <h3 style="margin-top:20px">Командын мөрөөр (Git ашиглавал)</h3>
+ <p>Git суулгасан бол файлаа дараах командаар илгээж болно:</p>
+<pre><button class="cp">Хуулах</button>git init
+git add .
+git commit -m "Анхны хувилбар"
+git branch -M main
+git remote add origin https://github.com/USERNAME/my-site.git
+git push -u origin main</pre>
+ <div class="box tip"><b>Анхаарах</b>Нийтийн repository-д байгаа бүх зүйлийг хүн бүр харна. Нууц үг, API түлхүүр зэргийг хэзээ ч оруулж болохгүй.</div>
+</section>
+
+<section id="alt">
+ <h2>Бусад хялбар, үнэгүй хувилбарууд</h2>
+ <p>GitHub-ээс гадна төстэй үйлчилгээнүүд олон бий. Үнэгүй багцын нөхцөл өөрчлөгдөж болох тул албан ёсны сайтаас шалгаарай.</p>
+ <div class="cards">
+  <div class="card"><b>Netlify</b><p>Сайтынхаа хавтсыг Netlify Drop хуудас руу чирээд тавихад л хаяг гарна.</p></div>
+  <div class="card"><b>Cloudflare Pages</b><p>GitHub-тай холбож автоматаар нийтэлнэ. Хурдан, дэлхий даяар түгээлттэй.</p></div>
+  <div class="card"><b>Vercel</b><p>GitHub-тай холбоход бэлэн. React, Next.js төслүүдэд түгээмэл.</p></div>
+  <div class="card"><b>GitLab Pages</b><p>GitHub Pages-тэй төстэй, GitLab дээр ажилладаг.</p></div>
+ </div>
+</section>
+
+<section id="hard">
+ <figure class="fig" role="img" aria-label="Сервер"><svg viewBox="0 0 240 160"><rect x="50" y="14" width="140" height="38" rx="8" class="k4"/><rect x="50" y="60" width="140" height="38" rx="8" class="k4"/><rect x="50" y="106" width="140" height="38" rx="8" class="k4"/><circle cx="70" cy="33" r="5" class="k2"/><circle cx="70" cy="79" r="5" class="k2"/><circle cx="70" cy="125" r="5" class="k3"/><rect x="90" y="29" width="80" height="8" rx="4" class="k1" opacity=".3"/><rect x="90" y="75" width="80" height="8" rx="4" class="k1" opacity=".3"/><rect x="90" y="121" width="80" height="8" rx="4" class="k1" opacity=".3"/></svg><figcaption>Өөрийн сервер</figcaption></figure>
+ <h2>Хүнд арга: өөрийн сервер (VPS)</h2>
+ <p>VPS (Virtual Private Server) нь түрээсэлсэн виртуал компьютер. Энд өөрөө бүгдийг тохируулах тул илүү хяналттай, дур зоргоороо программ суулгаж, backend, өгөгдлийн сан ажиллуулж болно. Гэхдээ Linux-ийн командын мөрийг мэдэж, аюулгүй байдал болон шинэчлэлтийг өөрөө хариуцна.</p>
+ <div class="bar"><div id="b2"></div></div><div class="pc" id="p2">0 / 8 алхам хийгдсэн</div>
+ <ol class="steps" data-bar="b2" data-pc="p2">
+  <li><h3>VPS түрээслэх</h3><p>Хостинг компаниас (DigitalOcean, Hetzner, Vultr, дотоодын хостинг гэх мэт) хамгийн бага багцтай <b>Ubuntu LTS</b> сервер захиал. Танд серверийн <b>IP хаяг</b> болон нэвтрэх мэдээлэл ирнэ.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Серверт SSH-ээр нэвтрэх</h3><p>Компьютерийнхээ терминалаас:</p><pre><button class="cp">Хуулах</button>ssh root@SERVER_IP</pre><p>Аюулгүй байдлын үүднээс <code class="i">root</code>-оор байнга ажиллахгүй, тусдаа хэрэглэгч үүсгэж SSH түлхүүрээр нэвтрэхийг зөвлөдөг.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Систем шинэчлэх ба галт хана тохируулах</h3><pre><button class="cp">Хуулах</button>sudo apt update &amp;&amp; sudo apt upgrade -y
+sudo apt install ufw -y
+sudo ufw allow OpenSSH
+sudo ufw allow 'Nginx Full'
+sudo ufw enable</pre><p>Анхаар: <code class="i">OpenSSH</code>-ийг зөвшөөрөлгүйгээр галт ханыг идэвхжүүлбэл серверээс өөрийгөө түгжиж магадгүй.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Nginx вэб сервер суулгах</h3><pre><button class="cp">Хуулах</button>sudo apt install nginx -y
+sudo systemctl enable --now nginx</pre><p>Хөтөч дээр <code class="i">http://SERVER_IP</code> хаягийг нээхэд Nginx-ийн угтах хуудас гарна.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Сайтын хавтас үүсгэж файл хуулах</h3><pre><button class="cp">Хуулах</button># серверт:
+sudo mkdir -p /var/www/example.mn
+sudo chown -R $USER:$USER /var/www/example.mn
+
+# өөрийн компьютерээс:
+scp -r ./site/* USER@SERVER_IP:/var/www/example.mn/</pre><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Nginx-ийн тохиргоо бичих</h3><p><code class="i">/etc/nginx/sites-available/example.mn</code> файлд:</p><pre><button class="cp">Хуулах</button>server {
+    listen 80;
+    server_name example.mn www.example.mn;
+    root /var/www/example.mn;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}</pre><p>Дараа нь идэвхжүүлж шалгаад дахин ачаална:</p><pre><button class="cp">Хуулах</button>sudo ln -s /etc/nginx/sites-available/example.mn /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx</pre><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>Домэйныг серверт холбох</h3><p>Домэйн бүртгэгчийн DNS хэсэгт <b>A</b> бичлэг нэмж серверийн IP хаяг руу чиглүүл (дэлгэрэнгүйг дараагийн хэсгээс харна уу). DNS дэлхий даяар шинэчлэгдэхэд хэдэн минутаас хэдэн цаг хүртэл болдог.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+  <li><h3>HTTPS гэрчилгээ авах</h3><p>Үнэгүй Let's Encrypt гэрчилгээг Certbot-оор авна:</p><pre><button class="cp">Хуулах</button>sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d example.mn -d www.example.mn
+sudo certbot renew --dry-run</pre><p>Сүүлийн команд нь гэрчилгээ автоматаар сунгагдаж байгааг шалгана.</p><label class="done"><input type="checkbox"> Хийсэн</label></li>
+ </ol>
+ <div class="box tip"><b>Серверийг хамгаалах</b>Тогтмол шинэчлэлт хийх, нууц үгээр нэвтрэхийг хаах (SSH түлхүүр), шаардлагагүй портыг хаах, нөөцлөлт (backup) хийх нь таны хариуцлага.</div>
+</section>
+
+<section id="domain">
+ <h2>Домэйн ба HTTPS</h2>
+ <p>Домэйн авбал сайт <code class="i">username.github.io</code> гэсэн урт хаягийн оронд <code class="i">example.mn</code> зэрэг өөрийн хаягаар гарна. Домэйныг бүртгэгч компаниас жилээр түрээслэнэ.</p>
+ <h3>DNS бичлэгийн төрлүүд</h3>
+ <div class="scroll"><table class="cmp">
+  <tr><th>Бичлэг</th><th>Хэзээ хэрэглэх</th><th>Жишээ</th></tr>
+  <tr><td>A</td><td>Домэйныг IP хаяг руу чиглүүлэх (VPS-д)</td><td><code class="i">@ → 203.0.113.10</code></td></tr>
+  <tr><td>CNAME</td><td>Дэд домэйныг өөр нэр рүү чиглүүлэх</td><td><code class="i">www → USERNAME.github.io</code></td></tr>
+  <tr><td>AAAA</td><td>IPv6 хаяг руу чиглүүлэх</td><td><code class="i">@ → 2001:db8::1</code></td></tr>
+ </table></div>
+ <h3>GitHub Pages-д өөрийн домэйн холбох</h3>
+ <ol class="l" style="padding-left:20px;margin-bottom:12px">
+  <li>Repository-ийн <b>Settings → Pages → Custom domain</b> хэсэгт домэйнээ бичиж Save дар.</li>
+  <li>Домэйн бүртгэгчийн DNS дээр <code class="i">www</code> дэд домэйнд CNAME бичлэгийг <code class="i">USERNAME.github.io</code> руу чиглүүл.</li>
+  <li>Үндсэн домэйн (apex) бол GitHub-ийн албан ёсны баримтад заасан A бичлэгүүдийг нэм.</li>
+  <li>DNS шинэчлэгдсэний дараа <b>Enforce HTTPS</b>-г идэвхжүүл.</li>
+ </ol>
+ <div class="box"><b>Шалгах</b>IP хаяг, DNS бичлэгийн утгыг GitHub-ийн албан ёсны баримтаас (<a href="https://docs.github.com/pages" target="_blank" rel="noopener">docs.github.com/pages</a>) заавал шалгаарай. Интерфэйс, нөхцөл цаг хугацаанд өөрчлөгдөж болно.</div>
+</section>
+
+<section id="pick">
+ <h2>Харьцуулалт ба сонголт</h2>
+ <div class="scroll"><table class="cmp">
+  <tr><th>Шинж чанар</th><th>Хялбар (GitHub Pages)</th><th>Хүнд (VPS)</th></tr>
+  <tr><td>Зардал</td><td>Үнэгүй (домэйнээс бусад)</td><td>Сар бүр серверийн төлбөртэй</td></tr>
+  <tr><td>Шаардлагатай ур чадвар</td><td>Бараг шаардлагагүй</td><td>Linux, сүлжээ, аюулгүй байдал</td></tr>
+  <tr><td>Тохируулах хугацаа</td><td>10–15 минут</td><td>Хэдэн цаг</td></tr>
+  <tr><td>Backend, өгөгдлийн сан</td><td>Байхгүй (зөвхөн статик)</td><td>Бүрэн боломжтой</td></tr>
+  <tr><td>Хяналт</td><td>Хязгаартай</td><td>Бүрэн</td></tr>
+  <tr><td>Засвар, аюулгүй байдал</td><td>GitHub хариуцна</td><td>Өөрөө хариуцна</td></tr>
+ </table></div>
+ <h3>Надад аль нь тохиромжтой вэ?</h3>
+ <div class="pick" id="pk" role="group" aria-label="Нөхцөл"></div>
+ <div id="res" aria-live="polite"></div>
+</section>
+
+<section id="faq">
+ <h2>Түгээмэл асуулт</h2>
+ <details><summary>Сайт нээгдэхгүй, 404 гарч байна. Яах вэ?</summary><p>Нүүр файлын нэр яг <code class="i">index.html</code> (жижиг үсгээр) эсэх, repository-ийн үндсэн хавтсанд байгаа эсэх, Pages-ийн branch зөв сонгогдсон эсэхийг шалга. Шинэчилсний дараа 1–2 минут хүлээнэ.</p></details>
+ <details><summary>Өөрчлөлт сайт дээр харагдахгүй байна.</summary><p>Хөтчийн кэшээс болж байж магадгүй. Ctrl+F5 дарж дахин ачаал. Мөн commit амжилттай хийгдсэн эсэхийг repository-оос шалга.</p></details>
+ <details><summary>Зураг, CSS ачаалахгүй байна.</summary><p>Файлын зам, том жижиг үсгийг шалга. GitHub болон Linux сервер том жижиг үсгийг ялгадаг (<code class="i">Logo.png</code> ≠ <code class="i">logo.png</code>).</p></details>
+ <details><summary>Сайт дээрээ маягт илгээж, өгөгдөл хадгалах боломжтой юу?</summary><p>Статик хостинг дээр backend байхгүй. Гэхдээ Formspree зэрэг гадны маягтын үйлчилгээ ашиглаж болно, эсвэл VPS дээр өөрийн backend ажиллуулна.</p></details>
+ <details><summary>Хаанаас эхлэх нь дээр вэ?</summary><p>Эхлэгчдэд GitHub Pages-ийг зөвлөдөг. Дараа нь шаардлага гарвал VPS-д шилжих боломжтой. Файлууд нь адилхан тул шилжилт хялбар.</p></details>
+</section>
+</main>
+
+<footer>Энэхүү гарын авлага нь танин мэдэхүйн зорилготой. Үнэ, нөхцөл, интерфэйс өөрчлөгдөж болох тул албан ёсны баримт бичгийг шалгаарай. <a href="https://docs.github.com/pages" target="_blank" rel="noopener">GitHub Pages docs</a></footer>
+
+<script>
+// Алхмын явц
+document.querySelectorAll("ol.steps[data-bar]").forEach(ol=>{
+ const bar=document.getElementById(ol.dataset.bar),pc=document.getElementById(ol.dataset.pc),boxes=ol.querySelectorAll("input");
+ const upd=()=>{const n=[...boxes].filter(b=>b.checked).length;bar.style.width=(n/boxes.length*100)+"%";pc.textContent=n+" / "+boxes.length+" алхам хийгдсэн"+(n===boxes.length?" – Баяр хүргэе!":"")};
+ boxes.forEach(b=>b.onchange=upd);
+});
+// Хуулах товч
+document.querySelectorAll(".cp").forEach(b=>b.onclick=async()=>{
+ const t=b.parentElement.innerText.replace(/^Хуулах\s*/,"").replace(/Хуулсан\s*$/,"");
+ try{await navigator.clipboard.writeText(t);b.textContent="Хуулсан";setTimeout(()=>b.textContent="Хуулах",1500)}catch(e){b.textContent="Алдаа"}
+});
+// Сонголтын туслах
+const R={
+"Зөвхөн HTML/CSS/JS хуудас":"<b>GitHub Pages</b> хамгийн тохиромжтой. Үнэгүй, хурдан, засвар үйлчилгээ шаардахгүй. Портфолио, танилцуулга, блогт сайн.",
+"Нэвтрэх систем, өгөгдлийн сан хэрэгтэй":"<b>VPS</b> (эсвэл backend-ийг тусдаа үйлчилгээгээр хийх) шаардлагатай. Статик хостинг дээр сервер талын код ажиллахгүй.",
+"Суралцах, туршиж үзэх":"Эхлээд <b>GitHub Pages</b>-ээр эхэл, дараа нь жижиг VPS түрээслэж Nginx тохируулж үз. Суралцахад хамгийн сайн зам.",
+"Бизнесийн сайт, өөрийн домэйнтой":"Статик сайт бол <b>GitHub Pages / Cloudflare Pages + өөрийн домэйн</b> хангалттай. Захиалга, төлбөр зэрэг динамик функц хэрэгтэй бол VPS эсвэл бэлэн платформ."
+};
+const pk=document.getElementById("pk"),res=document.getElementById("res");
+function sel(k){[...pk.children].forEach(b=>b.setAttribute("aria-pressed",b.textContent===k));res.innerHTML=R[k]}
+Object.keys(R).forEach(k=>{const b=document.createElement("button");b.textContent=k;b.onclick=()=>sel(k);pk.appendChild(b)});
+sel("Зөвхөн HTML/CSS/JS хуудас");
+</script>
+</body>
+</html>
